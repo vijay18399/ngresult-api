@@ -1,0 +1,29 @@
+{
+  "name": "ngresult-api",
+  "version": "1.0.0",
+  "description": "A REST API for Uploading JNTUK results",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "keywords": [
+    "nodejs",
+    "express",
+    "rest",
+    "api",
+    "mongodb"
+  ],
+  "author": "vijay18399",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.0",
+    "moment": "^2.29.3",
+    "mongoose": "^6.3.1",
+    "multer": "^1.4.4",
+    "pdf2table": "0.0.2"
+  }
+}
