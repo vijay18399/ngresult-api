@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const ResultSchema = mongoose.Schema({
   link: String,
+  regulation: String,
   semester: String,
   category: String,
   creditsum: Number,
