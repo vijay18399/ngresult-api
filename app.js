@@ -18,7 +18,7 @@ var storage = multer.diskStorage({
 });
 
 const fileFilter = (req, file, cb) => {
-  if (file.mimetype === "pdf") {
+  if (file.mimetype === "application/pdf") {
     cb(null, true);
   } else {
     cb(null, false);
