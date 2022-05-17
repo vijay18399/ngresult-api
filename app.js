@@ -13,7 +13,7 @@ var storage = multer.diskStorage({
     cb(null, "public/");
   },
   filename: function (req, file, cb) {
-    cb(null, new Date().toISOString() + file.originalname);
+    cb(null, file.originalname);
   },
 });
 
@@ -24,20 +24,16 @@ const fileFilter = (req, file, cb) => {
     cb(null, false);
   }
 };
-
+multer({
+  storage: storage,
+  fileFilter: fileFilter,
+}).single("pdf");
 app.use(cors());
 app.use(bodyParser.json());
-app.use(
-  multer({
-    storage: storage,
-    fileFilter: fileFilter,
-  }).single("pdf")
-);
 
 app.use("/", resultRoute);
 
 app.use((error, req, res, next) => {
-  console.log(error);
   const status = error.statusCode || 500;
   const message = error.message;
   const data = error.data;

@@ -26,17 +26,3 @@ exports.cleanRows = function (rows) {
   }
   return rrcollection;
 };
-
-exports.generateLink = function (reg, sem, category) {
-  return (
-    reg +
-    "-" +
-    sem +
-    "-" +
-    category +
-    "-" +
-    "Result" +
-    "-" +
-    moment().format("DD-MM-YYYY")
-  );
-};
