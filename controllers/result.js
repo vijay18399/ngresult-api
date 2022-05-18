@@ -36,6 +36,7 @@ exports.getResult = (req, res, next) => {
 };
 
 exports.postResult = (req, res, next) => {
+  console.log(req.file);
   if (!req.file) {
     return res.status(422).send("No Pdf is Provided");
   }
