@@ -4,6 +4,7 @@ const ResultSchema = mongoose.Schema({
   creditsum: Number,
   date: Date,
   resultText: String,
+  collegeName: String,
   resultrecords: [
     {
       htno: String,

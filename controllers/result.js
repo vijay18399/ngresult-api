@@ -49,9 +49,10 @@ exports.postResult = (req, res, next) => {
       return parse(buffer);
     })
     .then((rows) => {
+      console.log(rows);
       creditsum = req.body.creditsum;
       resultText = rows[1][0] ? rows[1][0].trim() : "";
-
+      college = rows[1][1] ? rows[1][0].trim() : "";
       checkText = rows[0][0] ? rows[0][0].trim() : "";
       resultrecords = utils.cleanRows(rows);
       if (
@@ -67,9 +68,10 @@ exports.postResult = (req, res, next) => {
           link: Date.now(),
           resultText: resultText,
           resultrecords: resultrecords,
+          collegeName: college,
           date: new Date(),
         });
-        return result.save();
+        return "result.save()";
       }
     })
     .then((data) => {
