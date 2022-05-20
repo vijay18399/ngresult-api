@@ -5,14 +5,10 @@ const bodyParser = require("body-parser");
 require("dotenv/config");
 const resultRoute = require("./routes/result.route");
 var port = process.env.PORT || 3000;
+const cors = require("cors");
 
 app.use(bodyParser.json());
-app.use(function (req, res, next) {
-  res.setHeader("Access-Control-Allow-Origin", "http://localhost:4200");
-  res.setHeader("Access-Control-Allow-Methods", "POST,GET,OPTIONS,PUT,DELETE");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type,Accept");
-  next();
-});
+app.use(cors());
 app.use("/", resultRoute);
 
 app.use((error, req, res, next) => {

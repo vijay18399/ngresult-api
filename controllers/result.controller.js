@@ -71,7 +71,7 @@ exports.postResult = (req, res, next) => {
           collegeName: college,
           date: new Date(),
         });
-        return "result.save()";
+        return result.save();
       }
     })
     .then((data) => {
