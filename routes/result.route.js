@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const ResultController = require("../controllers/result");
+const ResultController = require("../controllers/result.controller");
 const upload = require("../middlewares/upload");
 
 router.get("/results", ResultController.getResults);

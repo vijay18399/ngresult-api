@@ -3,31 +3,10 @@ const app = express();
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const multer = require("multer");
 require("dotenv/config");
-const resultRoute = require("./routes/result");
+const resultRoute = require("./routes/result.route");
 var port = process.env.PORT || 3000;
 
-var storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "public/");
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.originalname);
-  },
-});
-
-const fileFilter = (req, file, cb) => {
-  if (file.mimetype === "application/pdf") {
-    cb(null, true);
-  } else {
-    cb(null, false);
-  }
-};
-multer({
-  storage: storage,
-  fileFilter: fileFilter,
-}).single("pdf");
 app.use(cors());
 app.use(bodyParser.json());
 

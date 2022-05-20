@@ -1,4 +1,4 @@
-const Result = require("../models/Result");
+const Result = require("../models/result.model");
 var pdf2table = require("pdf2table");
 var fs = require("fs").promises;
 var utils = require("../utility/lib");
