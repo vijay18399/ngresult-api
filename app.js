@@ -2,14 +2,17 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
-const cors = require("cors");
 require("dotenv/config");
 const resultRoute = require("./routes/result.route");
 var port = process.env.PORT || 3000;
 
-app.use(cors({ origin: true }));
 app.use(bodyParser.json());
-
+app.use(function (req, res, next) {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  next();
+});
 app.use("/", resultRoute);
 
 app.use((error, req, res, next) => {
