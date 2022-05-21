@@ -3,6 +3,7 @@ var pdf2table = require("pdf2table");
 var fs = require("fs").promises;
 var utils = require("../utility/lib");
 const { promisify } = require("util");
+const { redirect } = require("express/lib/response");
 const parse = promisify(pdf2table.parse);
 exports.getResults = (req, res, next) => {
   const currentPage = req.query.page || 1;
@@ -36,19 +37,25 @@ exports.getResult = (req, res, next) => {
 };
 
 exports.postResult = (req, res, next) => {
+  console.log("Received File");
   console.log(req.file);
+  console.log("Received Body");
+  console.log(req.body);
   if (!req.file) {
     return res.status(422).send("No Pdf is Provided");
   }
   pdfloc = "./public/" + req.file.filename;
   fs.readFile(pdfloc)
     .then((buffer) => {
+      console.log("Reading File Done");
       return buffer;
     })
     .then((buffer) => {
+      console.log("Parsing File Started");
       return parse(buffer);
     })
     .then((rows) => {
+      console.log("Received Rows ");
       console.log(rows);
       creditsum = req.body.creditsum;
       resultText = rows[1][0] ? rows[1][0].trim() : "";
@@ -59,10 +66,12 @@ exports.postResult = (req, res, next) => {
         checkText != "JAWAHARLAL NEHRU TECHNOLOGICAL UNIVERSITY KAKINADA" ||
         resultrecords.length == 0
       ) {
+        console.log("Not Valid PDF ");
         throw new Error(
           "Uploaded PDF is not Recognizable as R16 JNTUK Result PDF, Please Upload Correct file"
         );
       } else {
+        console.log("Creating Result");
         result = new Result({
           creditsum: creditsum,
           link: Date.now(),
@@ -75,9 +84,13 @@ exports.postResult = (req, res, next) => {
       }
     })
     .then((data) => {
+      console.log("Creating Result Done");
       res.status(201).json(result);
     })
     .catch((err) => {
       res.status(500).json({ message: err.message });
     });
+};
+exports.dummyPost = (req, res, next) => {
+  res.status(201).json({ body: req.body, file: req.file });
 };
