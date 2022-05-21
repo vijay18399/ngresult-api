@@ -3,7 +3,7 @@ var pdf2table = require("pdf2table");
 var fs = require("fs").promises;
 var utils = require("../utility/lib");
 const { promisify } = require("util");
-const { redirect } = require("express/lib/response");
+
 const parse = promisify(pdf2table.parse);
 exports.getResults = (req, res, next) => {
   const currentPage = req.query.page || 1;
@@ -37,6 +37,7 @@ exports.getResult = (req, res, next) => {
 };
 
 exports.postResult = (req, res, next) => {
+  res.setTimeout(500000);
   console.log("Received File");
   console.log(req.file);
   console.log("Received Body");
@@ -90,7 +91,4 @@ exports.postResult = (req, res, next) => {
     .catch((err) => {
       res.status(500).json({ message: err.message });
     });
-};
-exports.dummyPost = (req, res, next) => {
-  res.status(201).json({ body: req.body, file: req.file });
 };
