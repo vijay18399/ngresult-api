@@ -72,23 +72,40 @@ exports.postResult = (req, res, next) => {
           "Uploaded PDF is not Recognizable as R16 JNTUK Result PDF, Please Upload Correct file"
         );
       } else {
-        console.log("Creating Result");
-        result = new Result({
+        console.log("Processed PDF Result");
+        result = {
           creditsum: creditsum,
           link: Date.now(),
           resultText: resultText,
           resultrecords: resultrecords,
           collegeName: college,
           date: new Date(),
-        });
-        return result.save();
+        };
+        res.status(200).json(result);
       }
-    })
-    .then((data) => {
-      console.log("Creating Result Done");
-      res.status(201).json(result);
     })
     .catch((err) => {
       res.status(500).json({ message: err.message });
+    });
+};
+exports.saveResult = (req, res, next) => {
+  result = new Result({
+    creditsum: req.body.creditsum,
+    link: Date.now(),
+    resultText: req.body.resultText,
+    resultrecords: req.body.resultrecords,
+    collegeName: req.body.college,
+    date: new Date(),
+  });
+
+  result
+    .save()
+    .then((data) => {
+      res
+        .status(201)
+        .json({ data: data, message: "Result Posted Successfully" });
+    })
+    .catch((err) => {
+      res.send(err);
     });
 };
