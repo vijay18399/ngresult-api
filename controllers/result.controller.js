@@ -37,7 +37,6 @@ exports.getResult = (req, res, next) => {
 };
 
 exports.postResult = (req, res, next) => {
-  res.setTimeout(0);
   console.log("Received File");
   console.log(req.file);
   console.log("Received Body");
