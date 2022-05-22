@@ -37,6 +37,7 @@ exports.getResult = (req, res, next) => {
 };
 
 exports.postResult = (req, res, next) => {
+  res.setTimeout(0);
   console.log("Received File");
   console.log(req.file);
   console.log("Received Body");
@@ -72,39 +73,23 @@ exports.postResult = (req, res, next) => {
         );
       } else {
         console.log("Processed PDF Result");
-        result = {
+        result = new Result({
           creditsum: creditsum,
           link: Date.now(),
           resultText: resultText,
           resultrecords: resultrecords,
           collegeName: college,
           date: new Date(),
-        };
-        res.status(200).json(result);
+        });
+        return result.save();
       }
     })
-    .catch((err) => {
-      res.status(500).json({ message: err.message });
-    });
-};
-exports.saveResult = (req, res, next) => {
-  result = new Result({
-    creditsum: req.body.creditsum,
-    link: Date.now(),
-    resultText: req.body.resultText,
-    resultrecords: req.body.resultrecords,
-    collegeName: req.body.college,
-    date: new Date(),
-  });
-
-  result
-    .save()
     .then((data) => {
       res
         .status(201)
         .json({ data: data, message: "Result Posted Successfully" });
     })
     .catch((err) => {
-      res.send(err);
+      res.status(500).json({ message: err.message });
     });
 };

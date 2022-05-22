@@ -5,6 +5,5 @@ const upload = require("../middlewares/upload");
 
 router.get("/results", ResultController.getResults);
 router.get("/result/:resultLink", ResultController.getResult);
-router.post("/process-pdf", upload.single("pdf"), ResultController.postResult);
-router.post("/save-result", ResultController.saveResult);
+router.post("/result", upload.single("pdf"), ResultController.postResult);
 module.exports = router;
