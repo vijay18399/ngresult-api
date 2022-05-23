@@ -37,7 +37,7 @@ exports.getResult = (req, res, next) => {
 };
 
 exports.postResult = (req, res, next) => {
-  req.setTimeout(72000);
+  console.log(req.timedout);
   console.log("Received File");
   console.log(req.file);
   console.log("Received Body");
@@ -48,14 +48,17 @@ exports.postResult = (req, res, next) => {
   pdfloc = "./public/" + req.file.filename;
   fs.readFile(pdfloc)
     .then((buffer) => {
+      console.log(req.timedout);
       console.log("Reading File Done");
       return buffer;
     })
     .then((buffer) => {
+      console.log(req.timedout);
       console.log("Parsing File Started");
       return parse(buffer);
     })
     .then((rows) => {
+      console.log(req.timedout);
       console.log("Received Rows ");
       console.log(rows);
       creditsum = req.body.creditsum;
