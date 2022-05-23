@@ -9,10 +9,6 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use(function (req, res, next) {
-  req.setTimeout(0); // no timeout for all requests, your server will be DoS'd
-  next();
-});
 app.use("/", resultRoute);
 
 app.use((error, req, res, next) => {

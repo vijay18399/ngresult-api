@@ -2,13 +2,10 @@ const express = require("express");
 const router = express.Router();
 const ResultController = require("../controllers/result.controller");
 const upload = require("../middlewares/upload");
-var timeout = require("connect-timeout");
 router.get("/results", ResultController.getResults);
 router.get("/result/:resultLink", ResultController.getResult);
-router.post(
-  "/result",
-  timeout("60s"),
-  upload.single("pdf"),
-  ResultController.postResult
-);
+router.post("/upload", upload.single("pdf"), ResultController.uploadFile);
+router.get("/files", ResultController.getFiles);
+router.get("/process", ResultController.processFile);
+router.post("/result", ResultController.saveResult);
 module.exports = router;

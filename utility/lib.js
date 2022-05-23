@@ -1,4 +1,5 @@
 const moment = require("moment");
+const fs = require("fs");
 exports.cleanRows = function (rows) {
   rrcollection = [];
   for (i = 1; i < rows.length; i += 1) {
@@ -25,4 +26,27 @@ exports.cleanRows = function (rows) {
     }
   }
   return rrcollection;
+};
+
+exports.getFiles = function (dir, files_) {
+  files_ = files_ || [];
+  var files = fs.readdirSync(dir);
+  for (var i in files) {
+    var name = dir + "/" + files[i];
+    if (fs.statSync(name).isDirectory()) {
+      getFiles(name, files_);
+    } else {
+      files_.push(name);
+    }
+  }
+  return files_;
+};
+exports.deleteFile = function (fileAddress) {
+  fs.unlink(fileAddress, function (err) {
+    if (err) {
+      return false;
+    } else {
+      return true;
+    }
+  });
 };

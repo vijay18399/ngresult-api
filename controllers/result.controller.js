@@ -94,3 +94,60 @@ exports.postResult = (req, res, next) => {
       res.status(500).json({ message: err.message });
     });
 };
+exports.uploadFile = (req, res, next) => {
+  if (!req.file) {
+    return res.status(422).send("No Pdf is Provided");
+  }
+  fileName = req.file.filename;
+  res.status(201).json({
+    fileName: fileName,
+  });
+};
+exports.getFiles = (req, res, next) => {
+  res.status(200).json(utils.getFiles("public"));
+};
+
+exports.processFile = (req, res, next) => {
+  pdfloc = req.body.fileAddress;
+  fs.readFile(pdfloc)
+    .then((buffer) => {
+      console.log(req.timedout);
+      console.log("Reading File Done");
+      return buffer;
+    })
+    .then((buffer) => {
+      console.log(req.timedout);
+      console.log("Parsing File Started");
+      return parse(buffer);
+    })
+    .then((rows) => {
+      res.status(200).json({
+        message: "processed PDF successfully",
+        data: rows,
+      });
+    })
+    .catch((err) => {
+      res.status(500).json({ message: err.message });
+    });
+};
+exports.saveResult = (req, res, next) => {
+  result = new Result({
+    creditsum: req.body.creditsum,
+    link: Date.now(),
+    resultText: req.body.resultText,
+    resultrecords: req.body.resultrecords,
+    collegeName: req.body.college,
+    date: new Date(),
+  });
+  result
+    .save()
+    .then((data) => {
+      res.status(200).json({
+        message: " Result Saved successfully",
+        data: result,
+      });
+    })
+    .catch((err) => {
+      res.status(500).json({ message: err.message });
+    });
+};
