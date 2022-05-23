@@ -36,17 +36,16 @@ exports.getFiles = function (dir, files_) {
     if (fs.statSync(name).isDirectory()) {
       getFiles(name, files_);
     } else {
-      files_.push(name);
+      files_.push(files[i]);
     }
   }
   return files_;
 };
-exports.deleteFile = function (fileAddress) {
+exports.deleteFile = function (fileName) {
+  fileAddress = "public/" + fileName;
   fs.unlink(fileAddress, function (err) {
     if (err) {
-      return false;
-    } else {
-      return true;
+      throw err;
     }
   });
 };

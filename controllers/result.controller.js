@@ -108,8 +108,10 @@ exports.getFiles = (req, res, next) => {
 };
 
 exports.processFile = (req, res, next) => {
-  pdfloc = req.body.fileAddress;
-  fs.readFile(pdfloc)
+  console.log(req.body);
+  fileName = req.body.fileName;
+  fileAddress = "public/" + fileName;
+  fs.readFile(fileAddress)
     .then((buffer) => {
       console.log(req.timedout);
       console.log("Reading File Done");
@@ -121,16 +123,40 @@ exports.processFile = (req, res, next) => {
       return parse(buffer);
     })
     .then((rows) => {
-      res.status(200).json({
-        message: "processed PDF successfully",
-        data: rows,
-      });
+      console.log("Received Rows ");
+      console.log(rows);
+      creditsum = req.body.creditsum;
+      resultText = rows[1][0] ? rows[1][0].trim() : "";
+      college = rows[1][1] ? rows[1][1].trim() : "";
+      checkText = rows[0][0] ? rows[0][0].trim() : "";
+      resultrecords = utils.cleanRows(rows);
+      if (
+        checkText != "JAWAHARLAL NEHRU TECHNOLOGICAL UNIVERSITY KAKINADA" ||
+        resultrecords.length == 0
+      ) {
+        console.log("Not Valid PDF ");
+        throw new Error(
+          "Uploaded PDF is not Recognizable as R16 JNTUK Result PDF, Please Upload Correct file"
+        );
+      } else {
+        console.log("Processed PDF Result");
+        result = {
+          creditsum: creditsum,
+          link: Date.now(),
+          resultText: resultText,
+          resultrecords: resultrecords,
+          collegeName: college,
+          date: new Date(),
+        };
+        res.status(200).json(result);
+      }
     })
     .catch((err) => {
       res.status(500).json({ message: err.message });
     });
 };
 exports.saveResult = (req, res, next) => {
+  utils.deleteFile(req.body.fileName);
   result = new Result({
     creditsum: req.body.creditsum,
     link: Date.now(),
