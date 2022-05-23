@@ -84,9 +84,7 @@ exports.postResult = (req, res, next) => {
       }
     })
     .then((data) => {
-      res
-        .status(201)
-        .json({ data: data, message: "Result Posted Successfully" });
+      res.status(201).json(data);
     })
     .catch((err) => {
       res.status(500).json({ message: err.message });
